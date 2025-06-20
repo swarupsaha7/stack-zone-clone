@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+langchain
+langchain-openai
+fastembed
+langchain-community
+python-dotenv
+langchain-ollama
+requests
