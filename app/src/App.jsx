@@ -2,14 +2,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import Home from './components/Home'
 import NotFound from './components/NotFound'
-import ProjectForm from './components/ProjectForm'
 
 
 function App() {
     const router = createBrowserRouter([
         {
             path: '/',
-            element: <ProjectForm />,
+            element: <Home />,
             errorElement: <NotFound />,
         }
     ])
