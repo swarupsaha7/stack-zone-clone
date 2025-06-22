@@ -10,13 +10,13 @@ app = FastAPI()
 rag_service = RAGService()
 
 # Optional: Enable CORS for frontend integration
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -36,8 +36,8 @@ def find(details: dict):
             type=details["type"], 
             description=details["description"], 
             features=details["features"], 
-            target_users=details["target_users"], 
-            experience_level=details["experience_level"], 
+            target_users=details["targetUsers"], 
+            experience_level=details["experienceLevel"], 
             preferences=details["preferences"]
         )
         print("--- Service call complete. Returning result. ---")

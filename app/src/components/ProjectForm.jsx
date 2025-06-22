@@ -2,7 +2,19 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { object, string, array } from 'yup'
 import { useFormik } from 'formik'
+import { HOST } from '../constant'
 
+const projectTypeOptions = [
+    { value: "web app", label: "Web app" },
+    { value: "mobile app", label: "Mobile app" },
+    { value: "api", label: "API" },
+    { value: "e-commerce", label: "E-commerce" },
+    { value: "saas", label: "SaaS" },
+    { value: "ai app", label: "AI app" },
+    { value: "game", label: "Game" },
+    { value: "iot", label: "IoT" },
+    { value: "desktop app", label: "Desktop App" }
+]
 
 const featureOptions = [
     { key: 'realTimeChat', label: 'Real-time Chat' },
@@ -34,14 +46,23 @@ const schema = object({
     preferences: string().required('Enter your preferences')
 })
 
-export default function ProjectForm() {
+export default function ProjectForm(props) {
     const { values, errors, handleBlur, handleChange, handleSubmit, touched, setFieldValue } = useFormik({
         initialValues: initialValues,
         validationSchema: schema,
         onSubmit: (values, action) => {
             console.log(values);
+            getStackRecommendation(values);
         }
     });
+
+    function getStackRecommendation(values) {
+        axios.post(`${HOST}/find`, values).then(response => {
+            props.setStackRecommendation(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center py-8 px-2 text-gray-300">
@@ -62,15 +83,15 @@ export default function ProjectForm() {
                                     style={{ boxShadow: '0 2px 16px 0 rgba(62,219,240,0.05)' }}
                                 >
                                     <option value="" className="bg-[#232b3a] text-gray-400">Select project type</option>
-                                    <option value="web" className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]">Web app</option>
-                                    <option value="mobile" className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]">Mobile app</option>
-                                    <option value="api" className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]">API</option>
-                                    <option value="ecommerce" className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]">E-commerce</option>
-                                    <option value="saas" className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]">SaaS</option>
-                                    <option value="ai" className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]">AI app</option>
-                                    <option value="game" className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]">Game</option>
-                                    <option value="iot" className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]">IoT</option>
-                                    <option value="desktop" className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]">Desktop App</option>
+                                    {projectTypeOptions.map((option, index) => (
+                                        <option 
+                                            key={index} 
+                                            value={option.value} 
+                                            className="bg-[#232b3a] text-gray-100 hover:bg-[#202736]"
+                                        >
+                                            {option.label}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             {touched.type && errors.type && (
