@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import AzureChatOpenAI
-from langchain_ollama import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
 
 
@@ -12,11 +11,7 @@ class RAGService:
         self.api_key = os.getenv("AZURE_OPENAI_API_KEY")
         self.api_version = os.getenv("AZURE_OPENAI_API_VERSION")
         self.endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
-        # self.deployment_name = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
-
-        print("api_key ===>>>  ", self.api_key)
-        print("api_version ===>>>  ", self.api_version)
-        print("endpoint ===>>>  ", self.endpoint)
+        self.deployment_name = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 
 
     def get_chain(self):
@@ -41,60 +36,38 @@ class RAGService:
         )
 
 
-        # llm = AzureChatOpenAI(
-        #     api_key=self.api_key,
-        #     api_version=self.api_version,
-        #     azure_endpoint=self.endpoint
-        # )
-
-        
-
-        llm = ChatOllama(
-            model="llama3.2:latest",
-            base_url="http://localhost:11434"
+        llm = AzureChatOpenAI(
+            api_key=self.api_key,
+            azure_endpoint=self.endpoint,
+            azure_deployment=self.deployment_name,
+            api_version=self.api_version,
+            temperature=0.7
         )
         
         chain = prompt | llm | StrOutputParser()
         return chain
 
     def find_tech_stack(self, type: str, description: str, features: list[str], target_users: str, experience_level: str, preferences: str):
-        # chain = self.get_chain()
-        # result = chain.invoke({
-        #     "type": type, 
-        #     "description": description, 
-        #     "features": ", ".join(features),
-        #     "target_users": target_users, 
-        #     "experience_level": experience_level,
-        #     "preferences": preferences,
-        #     "question": "What is the tech stack for this project?"
-        # })
-
-
-        llm = ChatOllama(
-            model="llama3.2:latest",
-            temperature=0,
-            base_url="http://localhost:11434"
-        )
-
-        print("llm Initiate ===>>>  ")
-        
-        result = llm.invoke({
-            "question": "What is javascript?"
+        chain = self.get_chain()
+        result = chain.invoke({
+            "type": type, 
+            "description": description, 
+            "features": ", ".join(features),
+            "target_users": target_users, 
+            "experience_level": experience_level,
+            "preferences": preferences,
+            "question": "What is the tech stack for this project?"
         })
-
-        print("result ===>>>  ", result)
 
         return result
     
 
-    def get_ollama_models(self):
+    def ping_models(self):
         llm = AzureChatOpenAI(
             api_key=self.api_key,
+            azure_endpoint=self.endpoint,
+            azure_deployment=self.deployment_name,
             api_version=self.api_version,
-            azure_endpoint=self.endpoint
+            temperature=0.7
         )
-        models = llm.invoke({
-            "question": "What is javascript?"
-        })
-        print("models ===>>>  ", models)
-        return models
+        return llm.invoke("What is javascript?")

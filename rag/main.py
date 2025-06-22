@@ -26,7 +26,7 @@ def read_root():
 
 @app.get("/models")
 def get_models():
-    return rag_service.get_ollama_models()
+    return rag_service.ping_models()
 
 
 @app.post("/find")
