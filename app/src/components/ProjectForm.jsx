@@ -149,7 +149,7 @@ export default function ProjectForm(props) {
                                 <input name="targetUsers" type="text" value={values.targetUsers} onChange={handleChange} onBlur={handleBlur}
                                     placeholder="e.g., Consumers, Enterprise, Internal"
                                     className="w-full bg-[#232b3a] text-gray-100 border-none rounded-lg p-3 shadow-lg transition duration-150 ease-in-out focus:ring-0 focus:border-transparent focus:outline-none hover:bg-[#202736] hover:text-[#3edbf0]"
-                                    style={{ boxShadow: '0 2px 16px 0 rgba(62,219,240,0.05)' }}
+                                    style={{ backgroundColor: '#232b3a', boxShadow: '0 2px 16px 0 rgba(62,219,240,0.05)' }}
                                 />
                             </div>
                             {touched.targetUsers && errors.targetUsers && (
@@ -180,7 +180,7 @@ export default function ProjectForm(props) {
                             <div className="rounded-xl bg-[#232b3a] border border-gray-700 px-4 py-2">
                                 <input name="preferences" type="text" value={values.preferences} onChange={handleChange} onBlur={handleBlur} placeholder="e.g., JavaScript stack only, No-code tools"
                                     className="w-full bg-[#232b3a] text-gray-100 border-none rounded-lg p-3 shadow-lg transition duration-150 ease-in-out focus:ring-0 focus:border-transparent focus:outline-none hover:bg-[#202736] hover:text-[#3edbf0]"
-                                    style={{ boxShadow: '0 2px 16px 0 rgba(62,219,240,0.05)' }}
+                                    style={{ backgroundColor: '#232b3a', boxShadow: '0 2px 16px 0 rgba(62,219,240,0.05)' }}
                                 />
                             </div>
                             <p className="text-xs text-gray-500 mt-1">Any specific technologies or approaches you prefer?</p>
